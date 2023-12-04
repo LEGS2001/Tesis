@@ -12,7 +12,7 @@ import pickle
 
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-data = pd.read_csv("dataset.csv", on_bad_lines='skip', engine="python")
+data = pd.read_csv("datasetprueba.csv", on_bad_lines='skip', engine="python")
 np.random.seed(2023)
 
 nlp = spacy.load("es_core_news_md")
@@ -56,6 +56,6 @@ decision_tree = DecisionTreeRegressor()
 decision_tree.fit(X_train, y_pred)
 pickle.dump(decision_tree, open('modelo.sav', 'wb'))
 
-test_text = model.encode(tokenizar('Quiero que no me abras la aplicacion'))
+test_text = model.encode(tokenizar('Abre la aplicación'))
 y_pred_test = decision_tree.predict([test_text])
 print(y_pred_test)

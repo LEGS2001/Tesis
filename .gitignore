@@ -1,2 +1,5 @@
 env
 datasets
+backups
+dataset.csv
+modelo.sav
