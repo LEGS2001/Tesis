@@ -12,26 +12,38 @@ import pickle
 
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-data = pd.read_csv("datasetprueba.csv", on_bad_lines='skip', engine="python")
+#data = pd.read_csv("dataset.csv", on_bad_lines='skip', engine="python")
+data = pd.read_csv("dataset.csv", on_bad_lines='skip', engine="python")
 np.random.seed(2023)
 
 nlp = spacy.load("es_core_news_md")
+print("Modelo cargado...")
 stop_words = nlp.Defaults.stop_words
 puntuaciones = string.punctuation
 
+# def tokenizar(oracion):
+#     # TODO: si vuelve a salir error checkear el if isinstance(float, oracion)
+
+#     # convierte la oracion en un objeto procesable por la clase nlp de la libreria spacy
+#     oracion_nlp = nlp(str(oracion))
+#     # separa cada palabra de la oración en una lista y las lematiza
+#     tokens = [ word.lemma_.lower().strip() for word in oracion_nlp ]
+#     # elimina las "stop words" y las puntuaciones
+#     tokens = [ word for word in tokens if word not in stop_words and word not in puntuaciones ]
+#     # vuelve a convertir la lista en un string con cada palabra separada por un espacio
+#     oracion_lematizada = " ".join(tokens)
+
+#     return oracion_lematizada
+
 def tokenizar(oracion):
-    # convierte la oracion en un objeto procesable por la clase nlp de la libreria spacy
-    oracion_nlp = nlp(oracion)
-    # separa cada palabra de la oración en una lista y las lematiza
-    tokens = [ word.lemma_.lower().strip() for word in oracion_nlp ]
-    # elimina las "stop words" y las puntuaciones
-    tokens = [ word for word in tokens if word not in stop_words and word not in puntuaciones ]
-    # vuelve a convertir la lista en un string con cada palabra separada por un espacio
-    oracion_lematizada = " ".join(tokens)
-    return oracion_lematizada
+    oracion_nlp = nlp(str(oracion))
+    if oracion_nlp:
+        return [word for word in oracion_nlp]
 
 print('Comenzando tokenización del dataset')
 data['tokenize'] = data['text'].apply(tokenizar)
+
+print('Comenzando embeddings...')
 data['embeddings'] = data['tokenize'].apply(model.encode)
 X = data['embeddings'].to_list()
 y = data['label'].to_list()

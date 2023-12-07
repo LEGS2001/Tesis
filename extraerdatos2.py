@@ -2,6 +2,11 @@ import os
 import spacy
 import string
 from csv import writer
+from sentence_transformers import SentenceTransformer
+import pandas as pd
+import numpy as np
+import spacy
+import string
 
 # TODO: Se extrajo datos por 2 dias, y se llegó a los 4.600.000 pero se tuvo que detener el programa debido a los cortes de luz.
 # TODO: El numero de labels 0 es inmensamente mayor que el resto, asi que podría considerarse reducir el número de labels para evitar overfitting.
@@ -11,6 +16,8 @@ nlp = spacy.load("es_core_news_md")
 stop_words = nlp.Defaults.stop_words
 nlp.Defaults.stop_words |= {'"','-',}
 puntuaciones = f'."-,¡¿:{string.punctuation}'
+
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # TODO: guardar la oracion directamente ya lematizada para mejorar la velocidad de la creacion del modelo
 def lematizar(oracion):
@@ -22,6 +29,7 @@ def lematizar(oracion):
     tokens = [ word for word in tokens if word not in stop_words and word not in puntuaciones ]
     # vuelve a convertir la lista en un string con cada palabra separada por un espacio
     oracion_lematizada = " ".join(tokens)
+
     return oracion_lematizada
 
 datasets = os.listdir('datasets')
@@ -36,6 +44,7 @@ with open(f'datasets/{datasets[23]}','r', encoding="utf8") as file:
     datos = file.readlines()[indice:]
     print('Datos cargados...')
     
+contador_noexiste = 0
 with open('dataset.csv', 'a', encoding="utf8", newline='') as outputfile:
     writer_object = writer(outputfile)
 
@@ -44,21 +53,26 @@ with open('dataset.csv', 'a', encoding="utf8", newline='') as outputfile:
 
     # recorre cada linea los datasets y las limpia
     for linea in datos:
-        linea = linea.rstrip()
+        linea = linea.strip()
         linea_lematizada = lematizar(linea)
+        embedding = model.encode(linea_lematizada)
+        embedding_str = ', '.join(map(str, embedding))
+
         # recorre cada linea de los datasets lematizados, y si encuentra el lema del label lo clasifica con su respectivo label
         # 0 = no existe; 1 = abrir; 2 = cerrar; 3 = clickear; 4 = seleccionar; 5 = copiar; 6 = pegar
         if 'abrir' in linea_lematizada or 'abre' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '1'])
+            writer_object.writerow(['1',embedding_str])
         elif 'cerrar' in linea_lematizada or 'cierra' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '2'])
+            writer_object.writerow(['2',embedding_str])
         elif 'clickear' in linea_lematizada or 'click' in linea_lematizada or 'clic' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '3'])
+            writer_object.writerow(['3',embedding_str])
         elif 'seleccionar' in linea_lematizada or 'seleccion' in linea_lematizada or 'selección' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '4'])
+            writer_object.writerow(['4',embedding_str])
         elif 'copiar' in linea_lematizada or 'copia' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '5'])
+            writer_object.writerow(['5',embedding_str])
         elif 'pegar' in linea_lematizada or 'pega' in linea_lematizada:
-            writer_object.writerow([linea_lematizada, '6'])
+            writer_object.writerow(['6',embedding_str])
         else:
-            writer_object.writerow([linea_lematizada, '0'])
+            if contador_noexiste < 2000:
+                writer_object.writerow(['0',embedding_str])
+                contador_noexiste += 1
