@@ -1,25 +1,18 @@
-import os
-import spacy
-import string
-from csv import writer
 from sentence_transformers import SentenceTransformer
+from csv import writer
+
 import pandas as pd
 import numpy as np
-import spacy
 import string
-
-# TODO: Se extrajo datos por 2 dias, y se llegó a los 4.600.000 pero se tuvo que detener el programa debido a los cortes de luz.
-# TODO: El numero de labels 0 es inmensamente mayor que el resto, asi que podría considerarse reducir el número de labels para evitar overfitting.
+import spacy
+import os
 
 # carga las librerias necesarias para poder lematizar las oraciones de los datasets
 nlp = spacy.load("es_core_news_md")
+#model = SentenceTransformer('all-MiniLM-L6-v2')
 stop_words = nlp.Defaults.stop_words
-nlp.Defaults.stop_words |= {'"','-',}
 puntuaciones = f'."-,¡¿:{string.punctuation}'
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# TODO: guardar la oracion directamente ya lematizada para mejorar la velocidad de la creacion del modelo
 def lematizar(oracion):
     # convierte la oracion en un objeto procesable por la clase nlp de la libreria spacy
     oracion_nlp = nlp(oracion)
@@ -32,47 +25,43 @@ def lematizar(oracion):
 
     return oracion_lematizada
 
-datasets = os.listdir('datasets')
-# TODO: Hacer que recorra la lista de datasets y que pase por cada uno de los archivos
-# lee cada uno de los archivos de la carpeta de datasets para obtener el dataset final procesado
-
-with open('dataset.csv', 'r', encoding="utf8") as indicefile:
-    # calcula en que linea se quedo para seguir cada vez que se recomienza el programa
+# calcula en que linea se quedo para seguir desde ahi
+with open('sistema1/dataset.csv', 'r', encoding="utf8") as indicefile:
     indice = (len(indicefile.readlines())) + 1 # se le suma + 1 para anular el header
 
-with open(f'datasets/{datasets[23]}','r', encoding="utf8") as file:
+# carga el dataset que se va a usar para el entrenamiento
+datasets = os.listdir('sistema1/datasets')
+with open(f'sistema1/datasets/{datasets[0]}','r', encoding="utf8") as file:
     datos = file.readlines()[indice:]
     print('Datos cargados...')
-    
-contador_noexiste = 0
-with open('dataset.csv', 'a', encoding="utf8", newline='') as outputfile:
+
+with open('sistema1/dataset.csv', 'a', encoding="utf8", newline='') as outputfile:
     writer_object = writer(outputfile)
-
-    # Esta linea se debe descomentar cada vez que se vuelve a crear el dataset
-    # writer_object.writerow(['text', 'label'])
-
     # recorre cada linea los datasets y las limpia
     for linea in datos:
         linea = linea.strip()
         linea_lematizada = lematizar(linea)
-        embedding = model.encode(linea_lematizada)
-        embedding_str = ', '.join(map(str, embedding))
+
+        #embedding = model.encode(linea_lematizada)
+        #embedding_str = ', '.join(map(str, embedding))
 
         # recorre cada linea de los datasets lematizados, y si encuentra el lema del label lo clasifica con su respectivo label
         # 0 = no existe; 1 = abrir; 2 = cerrar; 3 = clickear; 4 = seleccionar; 5 = copiar; 6 = pegar
         if 'abrir' in linea_lematizada or 'abre' in linea_lematizada:
-            writer_object.writerow(['1',embedding_str])
+            label = '1'
         elif 'cerrar' in linea_lematizada or 'cierra' in linea_lematizada:
-            writer_object.writerow(['2',embedding_str])
+            label = '2'
         elif 'clickear' in linea_lematizada or 'click' in linea_lematizada or 'clic' in linea_lematizada:
-            writer_object.writerow(['3',embedding_str])
+            label = '3'
         elif 'seleccionar' in linea_lematizada or 'seleccion' in linea_lematizada or 'selección' in linea_lematizada:
-            writer_object.writerow(['4',embedding_str])
+            label = '4'
         elif 'copiar' in linea_lematizada or 'copia' in linea_lematizada:
-            writer_object.writerow(['5',embedding_str])
+            label = '5'
         elif 'pegar' in linea_lematizada or 'pega' in linea_lematizada:
-            writer_object.writerow(['6',embedding_str])
+            label = '6'
         else:
-            if contador_noexiste < 2000:
-                writer_object.writerow(['0',embedding_str])
-                contador_noexiste += 1
+            label = '0'
+        
+        writer_object.writerow([linea,label])
+
+# NOTAS: 1) extraerdatos.py, 2) analisardataset.py, 3) entrenarmodelo.py, 4) cargarmodelo.py

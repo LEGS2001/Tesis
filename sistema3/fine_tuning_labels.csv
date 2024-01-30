@@ -1,0 +1,71 @@
+instruccion,label
+necesito una botella de agua,0
+la pantalla no me sirve,0
+el otro dia desayune temprano,0
+me compre un nuevo videojuego,0
+puedes salir a comprar comida,0
+por favor habla en el microfono,0
+enciende la television,0
+cambia el color de las luces,0
+desconecta los audifinos,0
+camina dos vueltas en el parque,0
+quiero que abras la aplicacion,1
+podrias abrir una app,1
+puedes abrirme la aplicacion,1
+puedes abrir paint,1
+necesito abrir la app de siempre,1
+me podrias ayudar abriendo una aplicacion,1
+abreme la app,1
+abre la aplicacion,1
+inicia la aplicacion de navegacion,1
+abre la sesion en la aplicacion de correo electronico,1
+por favor cierra la aplicacion de navegacion,2
+cierra la aplicacion de correo electronico,2
+puedes cerrar la aplicacion de reproduccion de musica,2
+cierra la aplicacion de edicion de fotos,2
+quiero que cierres la aplicacion de la calculadora,2
+finaliza la aplicacion de mensajeria instantanea,2
+deten la aplicacion de la agenda y calendario,2
+apaga la aplicacion de notas y recordatorios,2
+cierra la aplicacion de juegos en este momento,2
+termina la sesion en la aplicacion de redes sociales,2
+haz clic en la barra de menu de la aplicacion de navegacion,3
+da clic en la casilla de verificacion,3
+haz clic en el enlace de descarga en la pagina web,3
+da clic derecho en el icono de la aplicacion,3
+haz clic en el boton de reproduccion en la aplicacion de musica,3
+da clic en la herramienta de pincel en la aplicacion de edicion de fotos,3
+haz clic en el numero de la calculadora para realizar una operacion,3
+da clic en el mensaje que deseas responder en la aplicacion de mensajeria,3
+haz clic en el dia del calendario para agregar un evento,3
+da clic en el icono del microfono en la aplicacion de notas y recordatorios,3
+selecciona el texto que deseas copiar en la aplicacion de procesamiento de texto,4
+por favor selecciona las opciones deseadas en el menu de configuracion de la aplicacion,4
+debes seleccionar los elementos que quieres eliminar en la aplicacion de gestion de archivos,4
+selecciona las fotos que deseas enviar en la aplicacion de mensajeria,4
+selecciona la carpeta de destino para guardar el archivo descargado,4
+selecciona las casillas correspondientes a los elementos que deseas imprimir,4
+puedes seleccionar la opcion de copiar en el menu contextual del archivo seleccionado,4
+selecciona las opciones de formato antes de crear el documento,4
+selecciona los correos electronicos que deseas archivar en la aplicacion de correo,4
+selecciona los elementos que deseas eliminar en la lista de la aplicacion,4
+copia el texto resaltado en la aplicacion de procesamiento de texto,5
+copia el enlace de la pagina web en el navegador,5
+copia la imagen que deseas pegar en la aplicacion de edicion de fotos,5
+copia la celda seleccionada en la hoja de calculo,5
+copia el archivo que deseas compartir en la aplicacion de gestion de archivos,5
+copia el fragmento de codigo que necesitas en el editor de codigo fuente,5
+copia el mensaje importante en la aplicacion de mensajeria,5
+copia el parrafo que deseas citar en el documento de texto,5
+copia la direccion del lugar en la aplicacion de mapas,5
+copia la lista de tareas pendientes en la aplicacion de notas y recordatorios,5
+pega el texto copiado en la aplicacion de procesamiento de texto,6
+inserta el enlace copiado en el cuerpo del correo electronico,6
+pega la imagen en la posicion deseada en la aplicacion de edicion de fotos,6
+inserta la celda copiada en la hoja de calculo,6
+pega el archivo copiado en la carpeta de destino en la aplicacion de gestion de archivos,6
+inserta el fragmento de codigo copiado en el editor de codigo fuente,6
+pega el mensaje previamente copiado en la aplicacion de mensajeria,6
+inserta el parrafo copiado en la ubicacion deseada en el documento de texto,6
+pega la direccion copiada en la aplicacion de mapas,6
+inserta la lista de tareas pendientes copiada en la aplicacion de notas y recordatorios,6

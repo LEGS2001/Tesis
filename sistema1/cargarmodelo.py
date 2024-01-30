@@ -20,11 +20,11 @@ def tokenizar(oracion):
     return oracion_lematizada
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
-loaded_model = pickle.load(open('modelo.sav', 'rb'))
+loaded_model = pickle.load(open('sistema1/modelo.sav', 'rb'))
 
 while True:
     # toma la instruccion del usuario en lenguaje natural
-    instruccion = input('Escribe el comando necesario')
+    instruccion = input('Escribe el comando necesario \n')
 
     # tokeniza y le saca los embeddings a la instruccion
     test_text = model.encode(tokenizar(instruccion))
