@@ -1,7 +1,6 @@
-import pandas as pd
 from sentence_transformers import SentenceTransformer
 
-import pickle
+import pandas as pd
 import spacy
 import string
 
@@ -24,20 +23,17 @@ def lematizar(oracion):
 
     return embedding_str
 
-#data = pd.read_csv("dataset.csv", on_bad_lines='skip', engine="python")
-data = pd.read_csv("sistema1/backups/dataset3.csv", on_bad_lines='skip', engine="python")
-#percentage_to_remove = 99
-rows_to_remove = data[data[' label'] == 0]
-#num_rows_to_remove = int(len(rows_to_remove) * (percentage_to_remove / 100))
-num_rows_to_remove = len(rows_to_remove) - 40000
+data = pd.read_csv("sistema1/dataset.csv", on_bad_lines='skip', engine="python")
+
+rows_to_remove = data[data['label'] == 0]
+num_rows_to_remove = len(rows_to_remove) - 80000
 data = data.drop(rows_to_remove.sample(num_rows_to_remove).index)
 data = data.reset_index(drop=True)
 
 print(data['label'].value_counts())
 
 for index, row in data.iterrows():
-    # Apply the function to the 'ColumnToReplace' and update the DataFrame
-    data.at[index, 'text'] = lematizar(row['text'])
+    data.at[index, 'embedding'] = lematizar(row['text'])
 
-data.to_csv('sistema1/datasetsfinales/datasetconembeddings.csv', index=False)
+data.to_csv('sistema1/dataset_embeddings.csv', index=False)
 print('Finalizado!')

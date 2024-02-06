@@ -13,15 +13,7 @@ import ast
 np.random.seed(2023)
 model = SentenceTransformer('all-MiniLM-L6-v2')
 #data = pd.read_csv("dataset.csv", on_bad_lines='skip', engine="python")
-data = pd.read_csv("sistema1/datasetsfinales/datasetconembeddings.csv", on_bad_lines='skip', engine="python")
-
-
-# TODO: calcular un buen numero de filas que eliminar para prevenir el overfitting
-percentage_to_remove = 95
-rows_to_remove = data[data['label'] == 0]
-num_rows_to_remove = int(len(rows_to_remove) * (percentage_to_remove / 100))
-data = data.drop(rows_to_remove.sample(num_rows_to_remove).index)
-data = data.reset_index(drop=True)
+data = pd.read_csv("sistema1/dataset_embeddings.csv", on_bad_lines='skip', engine="python")
 
 # crea arrays de numpy. "X" para los embeddings; "y" para los labels
 X = data['embedding'].to_list()

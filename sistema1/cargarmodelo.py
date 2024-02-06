@@ -22,9 +22,10 @@ def tokenizar(oracion):
 model = SentenceTransformer('all-MiniLM-L6-v2')
 loaded_model = pickle.load(open('sistema1/modelo.sav', 'rb'))
 
-while True:
+
+def chatear(instruccion):
     # toma la instruccion del usuario en lenguaje natural
-    instruccion = input('Escribe el comando necesario \n')
+    #instruccion = input('Escribe el comando necesario \n')
 
     # tokeniza y le saca los embeddings a la instruccion
     test_text = model.encode(tokenizar(instruccion))
@@ -34,3 +35,4 @@ while True:
 
     # devuelve el label correspondiente
     print(y_pred_test)
+    return y_pred_test

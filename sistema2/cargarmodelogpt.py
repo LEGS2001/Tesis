@@ -6,7 +6,6 @@ load_dotenv()
 
 def chat(prompt):
     client = OpenAI(
-        # This is the default and can be omitted
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
     chat_completion = client.chat.completions.create(
@@ -25,19 +24,8 @@ def chat(prompt):
         ],
         model="gpt-3.5-turbo-1106",
     )
-
     return chat_completion.choices[0].message.content
 
 def chatearGPT(instruccion):
     response = chat(instruccion)
     return response
-
-def chatearGPT_thread(instruccion, callback):
-    #instruccion = input('Escribe tu instruccion \n')
-    #if instruccion.lower() == 'salir':
-    #    return 
-    response = chat(instruccion)
-    #callback(response)
-
-def handle_response(response):
-    print(response)

@@ -6,7 +6,9 @@ import tkinter as tk
 import ttkbootstrap as ttk
 import threading
 
-from sistema2.cargarmodelogpt import chatearGPT, handle_response
+from sistema1.cargarmodelo import chatear
+from sistema2.cargarmodelogpt import chatearGPT
+
 
 # función encargada de la detección de voz para realizar comandos
 def speech():
@@ -20,10 +22,10 @@ def speech():
             with speech_recognition.Microphone(1) as mic:
                 recognizer.adjust_for_ambient_noise(mic, duration=0.5)
                 audio = recognizer.listen(mic)
-
                 text = recognizer.recognize_google(audio, language="es-EC") #es-ES
                 text = text.lower()
-                print(f'Comando de voz: {text}')      
+                if text != None:
+                    return text
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
             continue
@@ -38,74 +40,87 @@ def comandos(label):
         print('El comando utilizado no existe')
     # abrir app
     if label == 1:
-        app = str(input('Que aplicación desea abrir?'))
+        print('Que aplicación desea abrir?')
+        app = speech()
         open(app, match_closest=True)
-    
     # cerrar app
     if label == 2:
-        app = str(input('Que aplicación desea cerrar?'))
+        print('Que aplicación desea cerrar?')
+        app = speech()
         close(app, match_closest=True)
-
     # clickear
     if label == 3:
         pyautogui.click()
-
     # seleccionar
     if label == 4:
         pyautogui.hotkey('ctrl', 'a')
-
+        print('Seleccionando')
     # copiar
     if label == 5:
         pyautogui.hotkey('ctrl', 'c')
-
     # pegar
     if label == 6:
         pyautogui.hotkey('ctrl', 'v')
 
 def modelo1():
-    # Función para la opción 1 del menú principal
-    ventana_opcion1 = tk.Toplevel(root)
-    ventana_opcion1.title("Menú Opción 1")
-    # Aquí puedes agregar los elementos del menú opción 1
+    while True:
+        prompt = speech()
+        print(f'Comando: {prompt}')
+        if 'salir' in prompt.lower():
+            print('Saliendo...')
+            break
+        try:
+            resp = chatear(prompt)
+            print(resp)
+        except:
+            print("Error")
 
 def modelo2():
-    # Función para la opción 2 del menú principal
-    #ventana_opcion2 = tk.Toplevel(root)
-    #ventana_opcion2.title("Menú Opción 2")
-    # Aquí puedes agregar los elementos del menú opción 2
     while True:
-        prompt = input("Escribe la instrucción deseada \n")
-        if prompt.lower() == 'salir':
+        prompt = speech()
+        print(f'Comando: {prompt}')
+        if 'salir' in prompt.lower():
+            print('Saliendo...')
             break
         try:
             resp = chatearGPT(prompt)
+            comandos(int(resp))
             print(resp)
-            #thread = threading.Thread(target=chatearGPT, args=(prompt, handle_response)).start()
-            #thread.join()
         except:
             print("Error")
 
 def modelo3():
+    pass
     # Función para la opción 3 del menú principal
-    ventana_opcion3 = tk.Toplevel(root)
-    ventana_opcion3.title("Menú Opción 3")
+    #ventana_opcion3 = tk.Toplevel(root)
+    #ventana_opcion3.title("Menú Opción 3")
     # Aquí puedes agregar los elementos del menú opción 3
 
-# Crear la ventana principal
-root = ttk.Window(themename="darkly")
-root.title("Asistente Virtual")
-root.geometry("600x300")
+def thread_modelo(model_func):
+        threading.Thread(target=model_func).start()
 
-# Crear los botones del menú principal
-boton_opcion1 = tk.Button(root, text="Modelo 1 - Regresión Logística y Árboles de Decisión", command=modelo1)
-boton_opcion1.pack(pady=10)
+def menu():
+    # Crear la ventana principal
+    root = ttk.Window(themename="darkly")
+    root.title("Asistente Virtual")
+    root.geometry("600x300")
 
-boton_opcion2 = tk.Button(root, text="Modelo 2 - GPT Turbo 3.5", command=modelo2)
-boton_opcion2.pack(pady=10)
+    # Crear los botones del menú principal
+    boton_opcion1 = tk.Button(root, text="Modelo 1 - Regresión Logística y Árboles de Decisión", command=lambda: thread_modelo(modelo1))
+    boton_opcion1.pack(pady=10)
 
-boton_opcion3 = tk.Button(root, text="Modelo 3 - GPT Fine Tuning", command=modelo3)
-boton_opcion3.pack(pady=10)
+    boton_opcion2 = tk.Button(root, text="Modelo 2 - GPT Turbo 3.5", command=lambda: thread_modelo(modelo2))
+    boton_opcion2.pack(pady=10)
 
-root.mainloop()
+    boton_opcion3 = tk.Button(root, text="Modelo 3 - GPT Fine Tuning", command=lambda: thread_modelo(modelo3))
+    boton_opcion3.pack(pady=10)
 
-# SI SE SIGUE CONGELANDO AL COMPRAR OPENAI INTENTAR HACIENDOLO SEPARANDO EN UN THREAD APARTE EL GUI
+    root.mainloop()
+
+threading.Thread(target=menu).start()
+
+
+# TODO:
+# HACER QUE EL MODELO 1 SOLO SE CARGUE CUANDO SE CLIQUEA EL PRIMER BOTON (TALVEZ?)
+# PAGAR OPENAI PARA EL FINETUNING
+# CONECTAR EL ASISTENTE VIRTUAL CON CADA UNO DE LOS MODELOS
