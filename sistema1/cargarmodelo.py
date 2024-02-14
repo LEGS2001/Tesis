@@ -26,13 +26,9 @@ loaded_model = pickle.load(open('sistema1/modelo.sav', 'rb'))
 def chatear(instruccion):
     # toma la instruccion del usuario en lenguaje natural
     #instruccion = input('Escribe el comando necesario \n')
-
     # tokeniza y le saca los embeddings a la instruccion
     test_text = model.encode(tokenizar(instruccion))
-
     # lo compara con el modelo creado a partir de los labels-embeddings del dataset entrenado
     y_pred_test = loaded_model.predict([test_text])
-
     # devuelve el label correspondiente
-    print(y_pred_test)
     return y_pred_test

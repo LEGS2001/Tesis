@@ -4,7 +4,7 @@ import os
 
 load_dotenv()
 
-def chat(prompt):
+def chatearGPT(prompt):
     client = OpenAI(
         api_key=os.environ.get("OPENAI_API_KEY"),
     )
@@ -26,6 +26,6 @@ def chat(prompt):
     )
     return chat_completion.choices[0].message.content
 
-def chatearGPT(instruccion):
-    response = chat(instruccion)
-    return response
+#def chatearGPT(instruccion):
+ #   response = chat(instruccion)
+ #   return response
