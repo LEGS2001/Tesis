@@ -18,7 +18,7 @@ def speech():
         try:
             #mic_list = speech_recognition.Microphone.list_microphone_names()
             #print(mic_list)
-            with speech_recognition.Microphone(1) as mic:
+            with speech_recognition.Microphone(3) as mic:
                 recognizer.adjust_for_ambient_noise(mic, duration=0.5)
                 audio = recognizer.listen(mic)
                 text = recognizer.recognize_google(audio, language="es-EC") #es-ES
@@ -35,7 +35,7 @@ def comandos(label, nombre_modelo, watermark):
     # 0 = no existe
     if label == 0:
         watermark.config(text=f'{nombre_modelo}: [EL COMANDO NO EXISTE]')
-        watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+        watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 1 = abrir app
     if label == 1:
         #print('Que aplicación desea abrir?')
@@ -47,7 +47,7 @@ def comandos(label, nombre_modelo, watermark):
         except:
            watermark.config(text=f'{nombre_modelo}: [LA APLICACIÓN NO EXISTE]') 
         finally:
-            watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+            watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 2 = cerrar app
     if label == 2:
         watermark.config(text=f'{nombre_modelo}: [¿QUE APLICACIÓN DESEA CERRAR?]')
@@ -58,27 +58,27 @@ def comandos(label, nombre_modelo, watermark):
         except:
             watermark.config(text=f'{nombre_modelo}: [LA APLICACIÓN NO EXISTE]') 
         finally:
-            watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+            watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 3 = clickear
     if label == 3:
         pyautogui.click()
         watermark.config(text=f'{nombre_modelo}: [CLICKEANDO]')
-        watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+        watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 4 = seleccionar
     if label == 4:
         pyautogui.hotkey('ctrl', 'a')
         watermark.config(text=f'{nombre_modelo}: [SELECCIONANDO]')
-        watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+        watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 5 = copiar
     if label == 5:
         pyautogui.hotkey('ctrl', 'c')
         watermark.config(text=f'{nombre_modelo}: [COPIANDO]')
-        watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+        watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
     # 6 = pegar
     if label == 6:
         pyautogui.hotkey('ctrl', 'v')
         watermark.config(text=f'{nombre_modelo}: [PEGANDO]')
-        watermark.after(2000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
+        watermark.after(1000, lambda: watermark.config(text=f'{nombre_modelo}: [ESCUCHANDO]'))
 
 def correr_modelo(num_modelo, nombre_modelo, root_watermark, watermark):
     corriendo_modelo = True
@@ -127,7 +127,6 @@ def activar_botones():
         boton.config(state="normal")
 
 def menu_principal():
-
     root = ttk.Window(themename="darkly")
     root.title("Asistente Virtual")
     root.geometry("600x300")
@@ -143,6 +142,9 @@ def menu_principal():
     boton_opcion3 = tk.Button(root, text="Modelo 3 - GPT Fine Tuning", command=lambda: manejar_threads(root, 'Modelo 3', 3))
     boton_opcion3.pack(pady=10)
     botones.append(boton_opcion3)
+    
+    instrucciones = tk.Label(root, text="Instrucciones:\n 1) Abrir app\n 2) Cerrar app\n 3) Clickear\n 4) Seleccionar\n 5) Copiar\n 6) Pegar\n Para cerrar el modelo decir solamente la palabra 'Salir'", font=('Arial', 12))
+    instrucciones.pack(pady=10)
 
     root.mainloop()
     

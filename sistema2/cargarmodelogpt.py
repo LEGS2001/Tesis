@@ -25,7 +25,3 @@ def chatearGPT(prompt):
         model="gpt-3.5-turbo-1106",
     )
     return chat_completion.choices[0].message.content
-
-#def chatearGPT(instruccion):
- #   response = chat(instruccion)
- #   return response
