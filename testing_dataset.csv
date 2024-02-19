@@ -1,0 +1,36 @@
+prompt,expected_result
+quiero tomar agua,0
+ayer no comi desayuno,0
+quiero jugar un videojuego,0
+el otro dia fui al zoologico,0
+voy a programar en python,0
+puedes abrir una app,1
+abre una aplicacion,1
+abre una app,1
+me abres la app,1
+abreme una aplicacion,1
+cierrame la aplicacion,2
+cierra una app,2
+puedes cerrar la app,2
+cierra una aplicacion,2
+quiero cerrar la aplicacion,2
+da un click,3
+clickea la pantalla,3
+click,3
+cliquear,3
+puedes dar click,3
+selecciona el texto,4
+puedes seleccionar todo,4
+selecciona la pantalla,4
+seleccionar,4
+intenta hacer una seleccion,4
+copia todo el texto,5
+copia la pantalla,5
+puedes copiar todo,5
+copiame el texto,5
+haz una copia,5
+pega el texto,6
+puedes pegar todo,6
+pega,6
+pegar,6
+pegame lo que escogi,6
